@@ -24,20 +24,21 @@ export async function POST(request: NextRequest){
         const tokendata = {
             id: user.id,
             username: user.username,
-            email: user.email
+            email: user.email,
         }
+
+        
 
         const createtoken = await jwt.sign(tokendata, process.env.JWT_SECRET!, {expiresIn: "1d"} );
         const response = NextResponse.json({
+            isadmin: user.isAdmin,
             message: "Login successful",
             success: true,
-        })
+            token: createtoken,
+        });
         response.cookies.set("token", createtoken, {  httpOnly: true
         })
         return response;
-
-
-
 
     } catch (error:any) {
             return NextResponse.json({error: error.message }, { status: 500 }); 

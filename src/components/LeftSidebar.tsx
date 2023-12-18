@@ -3,6 +3,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { CiHeart } from "react-icons/ci";
+import { RiAdminFill } from "react-icons/ri";
 
 import React, { useState } from 'react'
 import { FcAbout } from "react-icons/fc";
@@ -13,6 +14,8 @@ import { MdOutlineFeaturedVideo } from "react-icons/md";
 import Image from 'next/image'
 import Link from 'next/link'
 const LeftSidebar = () => {
+  const isAdmin = localStorage.getItem('admin') === 'true';
+
     const sidebarLinks = [
 
         {
@@ -50,6 +53,12 @@ const LeftSidebar = () => {
           link: "/featured",
           icon: <MdOutlineFeaturedVideo />,
         },
+        {
+          name: "List Property",
+          link: "/admin/listing",
+          icon: <RiAdminFill /> ,
+          hidden: !isAdmin,
+        },
       ];
     
       const [open , setopen] = useState(true);
@@ -62,7 +71,7 @@ const LeftSidebar = () => {
         <div className="mt-4 flex flex-col gap-4 relative">
         {  sidebarLinks.map((item, index) => (
             <Link className="group" href={item.link} key={index}>
-              <div className="text-gray-100 hover:text-gray-300 mb-8">
+              <div className={`text-gray-100 hover:text-gray-300 mb-8 ${item.hidden ? 'hidden' : ''}`}>
                 <div className="flex items-center">
               <span className="text-2xl"> {item.icon}</span>
               <span

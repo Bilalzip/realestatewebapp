@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import {toast} from 'react-hot-toast';
-const Login = () => { 
+import Navbar from '../Navbar';
+import jwt from 'jsonwebtoken'
+const Login = () => {
     const router = useRouter();
-  const [login, setLogin] = useState({
+    const [login, setLogin] = useState({
     email: '',
     password: '',
   });
@@ -19,6 +21,9 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/users/login", login);
+      console.log(response.data.isadmin)
+      localStorage.setItem('admin', response.data.isadmin);
+      localStorage.setItem("token", JSON.stringify(response.data.token));
       toast.success("Successfully logged in")
       router.push('/properties')
     } catch (error:any) {
@@ -26,12 +31,12 @@ const Login = () => {
       console.error("Error submitting form:", error);
     }
   };
- 
-
-
 
   return (
     <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+      <div className='hidden'>
+      </div>
       <h1 className="text-2xl font-semibold mb-6">Login</h1>
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">

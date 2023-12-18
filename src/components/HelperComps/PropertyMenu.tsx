@@ -19,10 +19,13 @@ const PropertyMenu = () => {
       name: 'Neighborhood',
       link: '/neighborhood',
     },
+   { name: 'Message',
+    link: '/Message',
+  },
   ];
 
   return (
-    <div className='flex flex-row md:p-4 gap-2 overflow-auto mt-4 md:mt-2 w-52 md:w-fit'>
+    <div className='flex flex-row md:p-4 gap-2 overflow-auto mt-4 md:mt-2 w-60 md:w-full'>
       {Categories.map((item, index) => (
         <Link
           key={index}
