@@ -4,7 +4,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
-const page = () => {
+const Page = () => {
 
   const [hide , sethide ] = useState(false);
 
@@ -93,4 +93,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
