@@ -6,7 +6,6 @@ export default function Home() {
        <h1 className="text-6xl font-bold text-black">Looking everywhere <br /> and still feel lost? <br /> We’ll get you home.
 </h1>
 <p className="font-thin text-3xl text-black mt-4 ">Your Real Estate Ninja will handle every step of the process  when you buy or sell.<br /> Use our search and management dashboard to track everything and everyone <br /> involved in your transaction.</p>
-
 <form className="mt-8">
     <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div className="relative">

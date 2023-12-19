@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Bars } from 'react-loader-spinner';
 const SchoolFinder = () => {
+  
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

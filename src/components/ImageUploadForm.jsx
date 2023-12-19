@@ -1,14 +1,19 @@
 "use client"
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { Bars } from 'react-loader-spinner';
 
 const ImageUploadForm = ({imgid}) => {
+
+  const router = useRouter();
 
   const [hide , sethide ] = useState(false)
 
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
+  const [loader , setloader] = useState(false)
   const handleImageChange = (e) => {
     const selectedImages = Array.from(e.target.files);
     setImages(selectedImages);
@@ -66,6 +71,7 @@ const ImageUploadForm = ({imgid}) => {
        }, 2000);
         const newpath = [];
       e.preventDefault();
+      setloader(true)
       for (let image of images){
       const formData = new FormData();
       formData.append('cloud_name', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
@@ -76,9 +82,29 @@ const ImageUploadForm = ({imgid}) => {
       newpath.push(cloud);
       saveurlarray(newpath);
     }
+    setloader(false)
     sethide(!hide)
+    router.push('/properties')
     
   };
+
+ 
+
+if (loader) {
+  return (
+    <Bars
+      height="80"
+      width="80"
+      color="#4fa94d"
+      ariaLabel="bars-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
+      visible={true}
+    />
+  );
+}
+
+
   return (
     <div className='flex items-center justify-center md:justify-start md:items-start mt-6 flex-col w-full'>
       <div className='w-full border border-black m-2'>
@@ -117,9 +143,8 @@ const ImageUploadForm = ({imgid}) => {
       <button onClick={(e)=>{sethide(!hide)}} type='submit' className="w-24 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700">Edit</button>
       </div>
       </div>
-      
-    </div>
-  );
+    </div> 
+              );
 };
 
 export default ImageUploadForm;

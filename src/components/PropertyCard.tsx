@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { CiStar } from "react-icons/ci";
@@ -15,9 +16,10 @@ interface PropertyCardProps {
 const PropertyCard: React.FC<PropertyCardProps> = ({ name, streetaddress, landmark, imgarray,slug }) => {
   const [token , settoken] = useState('');
   const [slugs ,setslugs] = useState('')
-  console.log(slugs)
+  const router = useRouter();
   useEffect(() => {
     const gettoken = () => {
+     
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
         const tokenString = JSON.parse(storedToken);
@@ -40,6 +42,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ name, streetaddress, landma
       });
       console.log(response.data.message);
       toast.success(response.data.message);
+      router.push('/users/favorite')
     } catch (error:any) {
       console.error('Error adding to favorites:', error.message);
     }

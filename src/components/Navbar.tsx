@@ -37,6 +37,9 @@ const Navbar = ({}) => {
    <Link href='/'> <img src='https://alchemy-project-front-end.vercel.app/assets/logo.8bf6daac.svg' className='text-2xl font-serif font-bold text-white'/></Link>  
       </div>
       <div className='flex items-center gap-2 text-white text-2xl font-sans'>
+      <Link href = '/admin/listing' > <button className='font-bold p-2  rounded-md'>
+        Listing
+      </button></Link>
      <Link href = '/properties' > <button className='font-bold p-2  rounded-md'>
         Properties
       </button></Link>
