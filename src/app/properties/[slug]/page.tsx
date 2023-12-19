@@ -2,6 +2,7 @@
 import ImageGallery from '@/components/HelperComps/ImageGallery';
 import PropertyMenu from '@/components/HelperComps/PropertyMenu';
 import LeftSidebar from '@/components/LeftSidebar';
+import SchoolFinder from '@/components/forms/SchoolFinder';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -38,7 +39,7 @@ const Page = ({ params }: any) => {
       <div className='flex flex-col ml-2 md:ml-36 mr-4'>
         <PropertyMenu />
         <ImageGallery imagedata = {images}/>
-        
+        <SchoolFinder/>
       </div>
     </section>
   );

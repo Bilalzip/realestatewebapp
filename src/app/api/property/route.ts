@@ -9,7 +9,7 @@ export async function POST(request: NextRequest, response: NextResponse,) {
     try {
       const Reqbody = await request.json();
       const {slug, id} = Reqbody;
-      console.log(id)
+      console.log(slug)
       if (id && !slug ){
 
         const favorites = []
@@ -30,17 +30,28 @@ export async function POST(request: NextRequest, response: NextResponse,) {
           favorites
         });
       }
-        const property = await Property.findOne({slug});
-        if (!property){
-          return NextResponse.json({
-            message: "no property found"
-          });
-        }
-        return NextResponse.json({
-            success: true,
-            message: "Property details are available",
-            property,
-          });
+
+
+
+   // try catch for mongo db 
+
+   try {
+    const property = await Property.findOne({slug});
+    if (!property){
+      return NextResponse.json({
+        message: "no property found"
+      });
+    }
+    return NextResponse.json({
+        success: true,
+        message: "Property details are available",
+        property,
+      });
+    
+   } catch (error) {
+    console.log(error)
+   }
+    // main try catch for errors
         
       } catch (error: any) {
         return NextResponse.json({ error: error.message });

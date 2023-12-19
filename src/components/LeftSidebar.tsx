@@ -29,18 +29,13 @@ const LeftSidebar = () => {
           icon: <FaHome />,
         },
         {
-          name: "Search",
-          link: "/search",
-          icon: <CiSearch />,
-        },
-        {
           name: "About Us",
           link: "/about-us",
           icon: <FcAbout />,
         },
         {
           name: "Favorites",
-          link: "/favorites",
+          link: "/user/favorites",
           icon: <CiHeart />,
         },
         {

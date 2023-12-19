@@ -34,16 +34,18 @@ const Navbar = ({}) => {
   return (
     <div className='flex md:flex-row flex-col md:items-center justify-between bg-gray-700 overflow-hidden shadow-sm shadow-white'>
       <div className='m-4'>
-      <img src='https://alchemy-project-front-end.vercel.app/assets/logo.8bf6daac.svg' className='text-2xl font-serif font-bold text-white'/>
+   <Link href='/'> <img src='https://alchemy-project-front-end.vercel.app/assets/logo.8bf6daac.svg' className='text-2xl font-serif font-bold text-white'/></Link>  
       </div>
-      <div className='flex items-center'>
-      <input
-        className=" px-2 py-1 text-xl md:text-2xl rounded-l-lg text-white"
-        type="text"
-        placeholder="Search..."
-      />
-      <button className="bg-green-400 text-xl md:text-2xl text-white p-2 rounded-r-lg">
-        <FaSearch />
+      <div className='flex items-center gap-2 text-white text-2xl font-sans'>
+     <Link href = '/properties' > <button className='font-bold p-2  rounded-md'>
+        Properties
+      </button></Link>
+     
+      <button className='font-bold p-2 rounded-md'>
+        About
+      </button>
+      <button className='font-bold p-2  rounded-md'>
+        FaQs
       </button>
     </div>
       <div className="buttons flex flex-row md:mr-4 mr:0 ml-4 mt-4 mb-4 sm:items-center ">
