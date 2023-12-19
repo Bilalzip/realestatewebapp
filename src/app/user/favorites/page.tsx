@@ -64,7 +64,7 @@ const Page = () => {
       <main>
         {
           property.map((item:Item, index)=>(
-            <div className='md:w-fit w-fit md:p-4 p-4 md:h-1/3 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-4 m-0'>
+            <div key={index || item.slug} className='md:w-fit w-fit md:p-4 p-4 md:h-1/3 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-4 m-0'>
            <Link href={`/properties/${item.slug}`}>
            <img className='md:w-auto h-full rounded-md ' src={item.imgarray.length > 0 ? item.imgarray[0] : ''}  alt="villa image" />
            </Link> 
