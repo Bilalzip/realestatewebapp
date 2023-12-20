@@ -62,28 +62,28 @@ return (
         Links.map((link)=>(
           <li key={link.name} className='md:ml-8 text-xl md:my-0 my-7'>
             <a href={link.link} className='text-gray-800 hover:text-gray-400 duration-500'>{link.name}</a>
+            
           </li>
+          
         ))
       }
+       <div className='ml-0 md:ml-4 '>
 
-      <div className='md:ml-4 ml-0 flex flex-col md:flex-row gap-4 py-2 px-6'>
-
-      {
-          !token ? (
-            <>
-            <button className='bg-white p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 '><Link href='/signup'>Signup</Link></button>
-        <button className='bg-white p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 ml-4'><Link href='/login'>Login</Link></button>
-            </>
-            
-           
-          ) : (
-            <button className='bg-white p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 '><Link href='/signup' onClick={OnLogout}>Logout</Link></button>
- 
-          )
-        }
-
-      </div>
+{
+    !token ? (
+      <>
+      <button className='bg-blue-500 p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 '><Link href='/signup'>Signup</Link></button>
+  <button className='bg-blue-500 p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 ml-4'><Link href='/login'>Login</Link></button>
+      </>
       
+     
+    ) : (
+      <button className='bg-blue-500 p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 '><Link href='/signup' onClick={OnLogout}>Logout</Link></button>
+
+    )
+  }
+
+</div>
     </ul>
     </div>
   </div>
