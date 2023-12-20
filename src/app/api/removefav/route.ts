@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken'
 import User from "@/models/UserModel";
 import Property from "@/models/Property";
+
+interface JwtPayload {
+    id: string;
+    // other properties if present
+  }
+  
 export async function POST(req: NextRequest, res: NextResponse){
 
     const ReqBody = await req.json();
@@ -9,7 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse){
     console.log(pro)
     console.log(token)
 
-    const decode = jwt.verify(token, process.env.JWT_SECRET!);
+    const decode = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
     const id = decode.id;
     console.log(id)
     const user = await User.findById(id);

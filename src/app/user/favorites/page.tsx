@@ -51,9 +51,7 @@ const Page = () => {
     }
     console.log(property)
 
-    type Item = {
-      name: string, streetaddress:string, pincode:string, landmark:string, imgarray:[string], slug:string , description:string, price:number , bedrooms:number, bathrooms:number
-    } 
+  
     const handleremove = async (slug: string) => {
       try {
         
@@ -69,6 +67,13 @@ const Page = () => {
         toast.error('An error occurred while removing the project');
       }
     };
+
+    console.log(property)
+
+
+    type Item = {
+      name: string, streetaddress:string, pincode:string, landmark:string, imgarray:[string], slug:string , description:string, price:number , bedrooms:number, bathrooms:number
+    } 
   return (
     <div className='flex flex-row'>
       <LeftSidebar/>
@@ -77,27 +82,27 @@ const Page = () => {
       <main>
         {
           property.map((item:Item, index)=>(
-            <div key={index || item.slug} className='p-4 w-full md:h-96 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-8 mt-8'>
-           <Link href={`/properties/${item.slug}`}>
-           <img className='md:w-auto h-full rounded-md w-full' src={item.imgarray.length > 0 ? item.imgarray[0] : ''}  alt="villa image" />
+            <div key={index || item?.slug} className='p-4 w-full md:h-96 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-8 mt-8'>
+           <Link href={`/properties/${item?.slug}`}>
+           <img className='md:w-auto h-full rounded-md w-full' src={item?.imgarray.length > 0 ? item.imgarray[0] : ''}  alt="villa image" />
            </Link> 
            <div className='flex flex-col md:ml-2 mt-3 md:mt-0 '>
-            <h1 className='text-3xl font-semibold '>{item.name}</h1>
+            <h1 className='text-3xl font-semibold '>{item?.name}</h1>
             <div className='mt-4 text-xl flex flex-col '>
          <div className='flex flex-col'>
           <div className='flex flex-row gap-1'> <span className='font-semibold'>Location:</span> 
-          <span> {item.landmark}</span> </div>
+          <span> {item?.landmark}</span> </div>
          <div className='flex flex-row gap-1'>
          <span className='font-semibold'>Pincode:</span>
            <span>
-           {item.pincode}
+           {item?.pincode}
             </span>
          </div>
               </div> 
             </div>
             </div>
             <div className='flex md:flex-col flex-row justify-between mt-4 md:mt-0 md:gap-8 gap-0'>
-            <Link href={`/properties/${item.slug}`}> <button className='bg-blue-600 text-white rounded-md font-semibold px-2 py-3'>Explore</button> </Link>
+            <Link href={`/properties/${item?.slug}`}> <button className='bg-blue-600 text-white rounded-md font-semibold px-2 py-3'>Explore</button> </Link>
             <button onClick={() => handleremove(item.slug)} className='bg-blue-600 text-white rounded-md font-semibold  px-2 py-3'> Remove </button>
             </div>
             </div> 

@@ -4,7 +4,7 @@ import RecentListingsComponent from '@/components/RecentListingsComponent'
 import TotalStatsComponent from '@/components/TotalStatsComponent'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
   return (
 
     <main className='flex flex-row'>
@@ -25,4 +25,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page;
