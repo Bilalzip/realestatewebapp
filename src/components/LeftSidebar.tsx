@@ -59,7 +59,7 @@ const LeftSidebar = () => {
       const [open , setopen] = useState(true);
   return (
    <>
-     <div className={`bg-[#332E3C] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-gray-100 px-4 mt-2 ml-1 md:ml-2 rounded-bl-lg rounded-tr-md rounded-br-md`}>
+     <div className={`bg-[#332E3C] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-gray-100 px-4 ml-1 md:ml-2 rounded-bl-lg rounded-tr-md rounded-br-md mt-4`}>
         <div className={`py-3 flex justify-end`}>
         <HiMenuAlt3 size={26} className='cursor-pointer' onClick={()=>setopen(!open)}/>
         </div>

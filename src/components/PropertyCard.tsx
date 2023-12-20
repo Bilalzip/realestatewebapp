@@ -42,7 +42,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ name, streetaddress, landma
       });
       console.log(response.data.message);
       toast.success(response.data.message);
-      router.push('/users/favorite')
+      router.push('/user/favorites')
     } catch (error:any) {
       console.error('Error adding to favorites:', error.message);
     }
