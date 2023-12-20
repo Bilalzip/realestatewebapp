@@ -27,13 +27,17 @@ const Page = ({ params }: any) => {
   const [property, setProperty] = useState([]);
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Pictures');
-  const [zip , setzip ] = useState('')
+  const [data , setdata ] = useState<{zip:string , state:string}>({
+    state: '', 
+    zip : ''
+  })
 
   useEffect(() => {
     setSlug(params);
     const fetchDet = async () => {
       try {
         const response = await axios.post(`/api/property`, slug);
+
         setProperty(response.data.property);
         if (response.data.property && response.data.property.imgarray) {
           const data = response.data.property.imgarray;
@@ -41,10 +45,7 @@ const Page = ({ params }: any) => {
         } else {
           console.error('imgarray is missing in the response data');
         }
-
-        if (response.data.property.pincode){
-          setzip(response.data.property.pincode)
-        }
+        
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -56,7 +57,7 @@ const Page = ({ params }: any) => {
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
   };
-  console.log(zip)
+  
 
   return (
     <section className='flex flex-row'>
@@ -76,7 +77,7 @@ const Page = ({ params }: any) => {
           ))}
         </div>
         {selectedCategory === 'Pictures' && <ImageGallery imagedata={images} />}
-        {selectedCategory === 'School' && <SchoolFinder code = {zip}/>}
+        {selectedCategory === 'School' && <SchoolFinder sz = {property}/>}
         {selectedCategory === 'Hospital' && <Hospital />}
         {selectedCategory === 'Neighborhood' && <Neighborhood />}
       </div>

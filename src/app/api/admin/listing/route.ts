@@ -9,15 +9,21 @@ connect()
 export async function POST(request: NextRequest, response: NextResponse) {
         try {
             const ReqBody = await request.json();
-            const { name, streetaddress, pincode, landmark,description, price , bedrooms, bathrooms} = ReqBody;
-            console.log(bedrooms,bathrooms)
+            const { name, streetaddress, pincode, landmark,description, price , bedrooms, bathrooms , state} = ReqBody;
+            
+            console.log(state)
               const save = await new Property({
                 description,
+                state,
                 name,
                 streetaddress,
                 pincode,
                 slug:slugify(name),price , bedrooms, bathrooms,
                 landmark}).save();
+
+                  console.log(save);
+
+
               return NextResponse.json({
                 success: true,
                 message: "Basic information has been saved",

@@ -37,6 +37,8 @@ export async function POST(request: NextRequest){
             token: createtoken,
         });
         response.cookies.set("token", createtoken, {  httpOnly: true
+        });
+        response.cookies.set("admin", user.isAdmin, {  httpOnly: true
         })
         return response;
 

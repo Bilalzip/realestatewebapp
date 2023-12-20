@@ -11,7 +11,7 @@ const Page = () => {
   const [id, setId] = useState('')
 
   const [basic , setbasic ] = useState({
-    name:'', streetaddress:"", pincode:'', landmark:'', description:'',price:'', bedrooms:'', bathrooms:'',
+    name:'', streetaddress:"", pincode:'', landmark:'', description:'',price:'', bedrooms:'', bathrooms:'', state:''
   })
   const onchange = (e:any) =>{
     const {name , value } = e.target;
@@ -37,23 +37,27 @@ const Page = () => {
         <div className="mb-4 md:flex md:justify-between gap-6">
           <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
             <label  className="block mr-0 md:mr-2">Name</label>
-            <input type="text" id="name" name='name' value={basic.name} onChange={onchange} className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
+            <input required type="text" id="name" name='name' value={basic.name} onChange={onchange} className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
           </div>
           <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
             <label className="block">Street Address</label>
-            <input type="text" id="address" name='streetaddress' value={basic.streetaddress} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
+            <input required type="text" id="address" name='streetaddress' value={basic.streetaddress} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
+          </div>
+          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
+            <label className="block">STATE (e.g ,CA)</label>
+            <input required placeholder='State Name like "CA"' type="text" id="state" maxLength={2} autoCapitalize='on' name='state' value={basic.state} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
           </div>
           <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
             <label  className="block">Pin Code</label>
-            <input type="text"id="address" name= 'pincode' value={basic.pincode} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
+            <input required type="text"id="address" name= 'pincode' value={basic.pincode} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
           </div>
           <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
             <label className="block mr-0 md:mr-2">LandMark</label>
-            <input type="text" id="address" name="landmark" value={basic.landmark} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
+            <input required type="text" id="address" name="landmark" value={basic.landmark} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
           </div>
           <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
             <label className="block mr-0 md:mr-2">Tentative Price $</label>
-            <input type="text" id="address" name="price" value={basic.price} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
+            <input required type="text" id="address" name="price" value={basic.price} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
           </div>
           <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
             <label className="block mr-0 md:mr-2">Bedrooms</label>
