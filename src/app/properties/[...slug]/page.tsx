@@ -76,7 +76,7 @@ const Page = ({ params }: any) => {
           ))}
         </div>
         {selectedCategory === 'Pictures' && <ImageGallery imagedata={images} />}
-        {selectedCategory === 'School' && <SchoolFinder/>}
+        {selectedCategory === 'School' && <SchoolFinder code = {zip}/>}
         {selectedCategory === 'Hospital' && <Hospital />}
         {selectedCategory === 'Neighborhood' && <Neighborhood />}
       </div>
