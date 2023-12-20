@@ -3,16 +3,18 @@
 import LeftSidebar from '@/components/LeftSidebar';
 import axios from 'axios';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { Bars } from 'react-loader-spinner';
 
-const page = () => {
+const Page = () => {
 
   const searchParams = useSearchParams();
   const search:any = searchParams.get('q');
+
   const [properties , setproperties] = useState([]);
   const [loading , setloading] = useState(true)
+
   useEffect(() => {
     const prop = async (data: any) => {
       console.log(data);
@@ -48,7 +50,7 @@ const page = () => {
         ) : (
 
        properties?.map((item:{imgarray : [string], price:string , bedrooms:string ,bathrooms:string , slug:string, name:string})=>(
-        <main className='mt-4'>
+        <main className='mt-4' key = {item.name}>
         <div className="overflow-hidden shadow-md rounded-md h-fit w-full">
              <img className="w-full h-48 object-cover" src={item.imgarray[0]} alt="Property" />
               <div className='flex flex-row'>
@@ -82,4 +84,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
