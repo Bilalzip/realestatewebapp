@@ -5,7 +5,7 @@ import { MdDashboard } from "react-icons/md";
 import { CiHeart } from "react-icons/ci";
 import { RiAdminFill } from "react-icons/ri";
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FcAbout } from "react-icons/fc";
 import { CiSearch } from "react-icons/ci";
 import { FaBlog } from "react-icons/fa";
@@ -14,7 +14,19 @@ import { MdOutlineFeaturedVideo } from "react-icons/md";
 import Image from 'next/image'
 import Link from 'next/link'
 const LeftSidebar = () => {
-  const isAdmin = localStorage.getItem('admin') === 'true';
+
+  const[admin , setadmin]=useState(false);
+
+   useEffect(()=>{
+    if (typeof window !== "undefined") {
+      const isAdmin = localStorage.getItem('admin');
+      if (isAdmin === "true") {
+        setadmin(true);
+      }
+     }
+   },[])
+     
+   
 
     const sidebarLinks = [
 
@@ -52,7 +64,7 @@ const LeftSidebar = () => {
           name: "List Property",
           link: "/admin/listing",
           icon: <RiAdminFill /> ,
-          hidden: !isAdmin,
+          hidden: !admin,
         },
       ];
     

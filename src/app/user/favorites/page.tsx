@@ -13,34 +13,34 @@ const Page = () => {
   const [fav , setfav] = useState([]);
   const [property , setproperty] = useState([]);
   useEffect(() => {
-    const gettoken = async () => {
       if (typeof window !== 'undefined') {
-        // Check if running in a browser environment
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
           const tokenString = JSON.parse(storedToken);
           console.log(tokenString);
           settoken(tokenString);
-          try {
-            const response = await axios.post('/api/users/favorite', {
-              token: tokenString,
-            });
-            console.log(response.data.wish);
-            const id = response.data.wish;
-            data(id);
-          } catch (error: any) {
-            console.log(error.message);
-          }
+          gettoken(tokenString);
+        
         } else {
           console.error('Token not found in local storage');
         }
       }
-    };
-  
-    gettoken();
   }, [token]);
-  
 
+ 
+  const gettoken =async (token:string) => {
+    console.log(token)
+   try {
+    const response = await axios.post('/api/users/favorite', {
+      token: token,
+    });
+    console.log(response.data.wish);
+    const id = response.data.wish;
+    data(id);
+  } catch (error: any) {
+    console.log(error.message);
+  }
+    }
       const data = async (data:[]) => {
         console.log(data)
       const response = await axios.post('/api/property',{
@@ -109,7 +109,6 @@ const Page = () => {
           ))
         }
       </main>
-
     </div>
   )
 }
