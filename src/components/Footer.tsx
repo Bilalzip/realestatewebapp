@@ -13,7 +13,7 @@ const Footer = () => {
 
         <li className='text-xl flex flex-col mt-6 text-white font-serif gap-4'>
           <ul><Link href = '/about'> About us</Link></ul>
-          <ul><Link href = '/contact'> Contact us</Link></ul>
+          <ul><Link href = '/contactus'> Contact us</Link></ul>
           <ul><Link href = '/privacy'> Privacy Policy</Link></ul>
         </li>
         
