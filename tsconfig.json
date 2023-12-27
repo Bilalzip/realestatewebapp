@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/HelperComps/PropertyMenu.tsx", "src/components/ImageUploadForm.jsx", "src/components/RichTextEditor.js", "src/components/Richtext.jsx", "src/components/Description.jsx", "src/components/HelperComps/ImageGallery.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/HelperComps/PropertyMenu.tsx", "src/components/ImageUploadForm.jsx", "src/components/RichTextEditor.js", "src/components/Richtext.jsx", "src/components/Description.jsx", "src/components/HelperComps/ImageGallery.jsx", "src/Context/UserContext.js"],
   "exclude": ["node_modules"]
 }

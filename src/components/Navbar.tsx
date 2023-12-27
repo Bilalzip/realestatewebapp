@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, {useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { FaSearch } from "react-icons/fa";
 import Menues from '@/constants/index'
@@ -9,14 +9,13 @@ import axios from 'axios';
 import { Poppins } from 'next/font/google';
 import { FiAlignJustify } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
-
 const poppins = Poppins({
   weight : '200',
   subsets:  ['latin'],
 });
 
 const Navbar = ({}) => {
-
+    
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -45,7 +44,8 @@ const Navbar = ({}) => {
     {name: "Properties",link:'/properties'}
   ];
   let [open,setOpen]=useState(false);
-return (
+return (     
+
   <div className='shadow-md w-full md:relative'>
     <div className='md:flex items-center justify-between bg-white py-4 md:px-10 px-7'>
     <div className='font-bold text-2xl cursor-pointer flex items-center font-[Poppins] 
@@ -87,6 +87,7 @@ return (
     </ul>
     </div>
   </div>
+
 )
 }
 

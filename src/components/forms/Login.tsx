@@ -1,11 +1,12 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import {toast} from 'react-hot-toast';
 import Navbar from '../Navbar';
 import jwt from 'jsonwebtoken'
 const Login = () => {
+
     const router = useRouter();
     const [login, setLogin] = useState({
     email: '',
@@ -24,7 +25,7 @@ const Login = () => {
       console.log(response.data.isadmin)
       localStorage.setItem('admin', response.data.isadmin);
       localStorage.setItem("token", JSON.stringify(response.data.token));
-      toast.success("Successfully logged in")
+      toast.success("Successfully logged in");
       router.push('/properties')
     } catch (error:any) {
       toast.error("Something goes wrong")

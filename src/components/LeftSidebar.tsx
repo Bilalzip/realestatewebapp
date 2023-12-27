@@ -16,10 +16,11 @@ import Link from 'next/link'
 const LeftSidebar = () => {
 
   const[admin , setadmin]=useState(false);
-
+  const [open , setopen] = useState(true);
    useEffect(()=>{
     if (typeof window !== "undefined") {
       const isAdmin = localStorage.getItem('admin');
+      setopen(false);
       if (isAdmin === "true") {
         setadmin(true);
       }
@@ -32,7 +33,7 @@ const LeftSidebar = () => {
 
         {
           name:"Dashboard",
-          link: '#',
+          link: '/admin/dashboard',
           icon: <MdDashboard />
         },
         {
@@ -66,9 +67,7 @@ const LeftSidebar = () => {
           icon: <RiAdminFill /> ,
           hidden: !admin,
         },
-      ];
-    
-      const [open , setopen] = useState(true);
+      ]; 
   return (
    <>
      <div className={`bg-[#332E3C] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-gray-100 px-4 ml-1 md:ml-2 rounded-bl-lg rounded-tr-md rounded-br-md mt-4`}>

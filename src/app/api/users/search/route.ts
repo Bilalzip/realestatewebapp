@@ -2,7 +2,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import Property from "@/models/Property";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
-
+connect();
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const Reqdata = await request.json();
@@ -12,15 +12,15 @@ export async function POST(request: NextRequest, response: NextResponse) {
     const properties = await Property.aggregate([
       {
         $search: {
-          index: "properties",
+          index: "search",
           text: {
             query: data,
             path: {
-              wildcard: "*",
-            },
-          },
-        },
-      },
+              wildcard: "*"
+            }
+          }
+        }
+      }
     ]);
 
     console.log(properties);
