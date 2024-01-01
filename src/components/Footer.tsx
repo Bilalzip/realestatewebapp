@@ -9,16 +9,13 @@ const Footer = () => {
         <img className='w-1/2 h-1/2 rounded-full' src="https://image.similarpng.com/very-thumbnail/2022/01/Buildings-real-estate-logo-design-on-transparent-background-PNG.png" alt="" />
         </div>
       </div>
-      <div className='md:w-1/3 w-full h-full md:ml-0 ml-8'>
-
+      <div className='md:w-1/3 w-full h-full md:ml-0 flex justify-center'>
         <li className='text-xl flex flex-col mt-6 text-white font-serif gap-4'>
-          <ul><Link href = '/about'> About us</Link></ul>
           <ul><Link href = '/contactus'> Contact us</Link></ul>
-          <ul><Link href = '/privacy'> Privacy Policy</Link></ul>
         </li>
         
       </div>
-      <div className='md:w-1/3 w-full h-full text-xl text-white mt-6 md:ml-0 p-4'>
+      <div className='md:w-1/3 w-full h-full text-xl text-white mt-6 md:ml-0 p-4 text-center'>
        <p>Discover the ultimate real estate experience with us, the <span className='font-bold'>Real Estate Ninjas</span>. Your go-to for seamless property transactions.</p>
       </div>
     </div>

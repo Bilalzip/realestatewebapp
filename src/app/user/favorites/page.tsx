@@ -17,7 +17,6 @@ const Page = () => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
           const tokenString = JSON.parse(storedToken);
-          console.log(tokenString);
           settoken(tokenString);
           gettoken(tokenString);
         
@@ -29,7 +28,7 @@ const Page = () => {
 
  
   const gettoken =async (token:string) => {
-    console.log(token)
+    
    try {
     const response = await axios.post('/api/users/favorite', {
       token: token,
@@ -42,14 +41,11 @@ const Page = () => {
   }
     }
       const data = async (data:[]) => {
-        console.log(data)
       const response = await axios.post('/api/property',{
         id:data
       });
-      console.log(response.data)
       setproperty(response.data.favorites);
     }
-    console.log(property)
 
   
     const handleremove = async (slug: string) => {
@@ -68,18 +64,15 @@ const Page = () => {
       }
     };
 
-    console.log(property)
-
 
     type Item = {
       name: string, streetaddress:string, pincode:string, landmark:string, imgarray:[string], slug:string , description:string, price:number , bedrooms:number, bathrooms:number
-    } 
+    }
+
   return (
     <div className='flex flex-row'>
       <LeftSidebar/>
-
-      
-      <main>
+      <section>
         {
           property.map((item:Item, index)=>(
             <div key={index || item?.slug} className='p-4 w-full md:h-96 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-8 mt-8'>
@@ -108,7 +101,8 @@ const Page = () => {
             </div> 
           ))
         }
-      </main>
+      </section> 
+
     </div>
   )
 }

@@ -5,7 +5,11 @@ import { useRouter } from 'next/navigation';
 import {toast} from 'react-hot-toast';
 import Navbar from '../Navbar';
 import jwt from 'jsonwebtoken'
+import {AuthUser} from "@/slice/AuthSlice"
+import { useDispatch, useSelector } from 'react-redux'
 const Login = () => {
+
+  const dispatch = useDispatch();
 
     const router = useRouter();
     const [login, setLogin] = useState({
@@ -25,6 +29,7 @@ const Login = () => {
       console.log(response.data.isadmin)
       localStorage.setItem('admin', response.data.isadmin);
       localStorage.setItem("token", JSON.stringify(response.data.token));
+      dispatch(AuthUser( JSON.stringify(response.data.token)));
       toast.success("Successfully logged in");
       router.push('/properties')
     } catch (error:any) {

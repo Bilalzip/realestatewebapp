@@ -1,25 +1,33 @@
 // TotalStatsComponent.tsx
 import React from 'react';
+type StatsType = {
+  totalusers: number;
+  totalproperties: number;
+};
 
-const TotalStatsComponent: React.FC = () => {
+interface TotalStatsComponentProps {
+  statsdata: StatsType;
+}
+
+const TotalStatsComponent: React.FC<TotalStatsComponentProps> = ({statsdata}) => {
   return (
     <div className="flex flex-col md:flex-row space-y-4 md:space-y-0">
       {/* Total Users */}
       <div className="bg-gray-200 p-4 w-full md:w-1/3">
         <h2>Total Users</h2>
-        {/* Add your data rendering logic here */}
+        {statsdata.totalusers}
       </div>
 
       {/* Total Property Listed */}
       <div className="bg-gray-200 p-4 w-full md:w-1/3">
         <h2>Total Property Listed</h2>
-        {/* Add your data rendering logic here */}
+        {statsdata.totalproperties}
       </div>
 
       {/* Total Purchases */}
       <div className="bg-gray-200 p-4 w-full md:w-1/3">
         <h2>Total Purchases</h2>
-        {/* Add your data rendering logic here */}
+        0
       </div>
     </div>
   );
