@@ -1,5 +1,6 @@
 "use client"
 import LeftSidebar from '@/components/LeftSidebar'
+import RecentListings from '@/components/RecentListings'
 import TotalStatsComponent from '@/components/TotalStatsComponent'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -36,6 +37,10 @@ const Page = () => {
         <LeftSidebar/>
      <div className="container mx-auto p-4">
      <TotalStatsComponent  statsdata = {data} />
+     <RecentListings/>
+     <div>
+
+     </div>
       </div>
       </main>
    

@@ -33,7 +33,6 @@ const Page = () => {
     const response = await axios.post('/api/users/favorite', {
       token: token,
     });
-    console.log(response.data.wish);
     const id = response.data.wish;
     data(id);
   } catch (error: any) {
@@ -74,7 +73,7 @@ const Page = () => {
       <LeftSidebar/>
       <section>
         {
-          property.map((item:Item, index)=>(
+          property?.map((item:Item, index)=>(
             <div key={index || item?.slug} className='p-4 w-full md:h-96 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-8 mt-8'>
            <Link href={`/properties/${item?.slug}`}>
            <img className='md:w-auto h-full rounded-md w-full' src={item?.imgarray.length > 0 ? item.imgarray[0] : ''}  alt="villa image" />
