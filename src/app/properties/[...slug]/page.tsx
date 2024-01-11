@@ -1,7 +1,7 @@
 "use client"
-import Hospital from '@/components/HelperComps/Hospital';
 import ImageGallery from '@/components/HelperComps/ImageGallery';
-import Neighborhood from '@/components/HelperComps/Neighborhood';
+// import Neighborhood from '@/components/HelperComps/Neighborhood';
+import WeatherAround from '@/components/HelperComps/WeatherAround';
 import LeftSidebar from '@/components/LeftSidebar';
 import SchoolFinder from '@/components/forms/SchoolFinder';
 import axios from 'axios';
@@ -16,28 +16,28 @@ const Page = ({ params }: any) => {
       name: 'School',
     },
     {
-      name: 'Hospital',
+      name: 'Weather',
     },
-    {
-      name: 'Neighborhood',
-    },
+    // {
+    //   name: 'Neighborhood',
+    // },
   ];
 
   const [slug, setSlug] = useState('');
   const [property, setProperty] = useState([]);
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Pictures');
-  const [data , setdata ] = useState<{zip:string , state:string}>({
-    state: '', 
-    zip : ''
-  })
+  const [zip , setzip ] = useState<string>("")
+
+  const [city , setcity] = useState("");
 
   useEffect(() => {
     setSlug(params);
     const fetchDet = async () => {
       try {
         const response = await axios.post(`/api/property`, slug);
-
+         console.log(response)
+        setzip(response.data.property.pincode)
         setProperty(response.data.property);
         if (response.data.property && response.data.property.imgarray) {
           const data = response.data.property.imgarray;
@@ -57,8 +57,9 @@ const Page = ({ params }: any) => {
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
   };
-  
 
+
+     console.log(zip)
   return (
     <section className='flex flex-row'>
       <LeftSidebar />
@@ -78,8 +79,8 @@ const Page = ({ params }: any) => {
         </div>
         {selectedCategory === 'Pictures' && <ImageGallery imagedata={images} />}
         {selectedCategory === 'School' && <SchoolFinder sz = {property}/>}
-        {selectedCategory === 'Hospital' && <Hospital />}
-        {selectedCategory === 'Neighborhood' && <Neighborhood />}
+        {selectedCategory === 'Weather' && <WeatherAround pin = {zip}/>}
+        {/* {selectedCategory === 'Neighborhood' && <Neighborhood />} */}
       </div>
     </section>
   );

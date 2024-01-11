@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Hospital = () => {
+const Page = () => {
   return (
     <div>
-      
+      hii
     </div>
   )
 }
 
-export default Hospital
+export default Page
