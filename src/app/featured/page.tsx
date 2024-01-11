@@ -5,7 +5,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Bars } from 'react-loader-spinner'
 
-const page = () => {
+const Page = () => {
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
   
@@ -14,10 +14,10 @@ const page = () => {
         try {
           const response = await axios.get('/api/admin/listing');
           setProperties(response.data.property);
-          setLoading(false); // Set loading to false once data is fetched
+          setLoading(false); 
         } catch (error) {
           console.error("Error fetching properties:", error);
-          setLoading(false); // Set loading to false in case of an error
+          setLoading(false); 
         }
       };
   
@@ -41,7 +41,6 @@ const page = () => {
                       visible={true}
                          />
         ) : (
-          // Display property cards once data is fetched
           properties.map((item: { name: string; _id: number; streetaddress: string; landmark: string; imgarray: []; slug: string }) => (
             <PropertyCard key={item._id} {...item} />
           ))
@@ -52,4 +51,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

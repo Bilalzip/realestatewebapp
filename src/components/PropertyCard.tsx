@@ -23,7 +23,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ name, streetaddress, landma
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
         const tokenString = JSON.parse(storedToken);
-        console.log(tokenString)
         settoken(tokenString);
         setslugs(slug);
       } else {

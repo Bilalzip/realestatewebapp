@@ -13,7 +13,7 @@ export async function POST(req:NextRequest, res: NextResponse){
         })
     } catch (error:any) {
 
-        return new Error(error.message)
+        return NextResponse.json(error)
         
     }
 
