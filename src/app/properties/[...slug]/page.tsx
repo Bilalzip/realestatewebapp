@@ -8,6 +8,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const Page = ({ params }: any) => {
+  console.log(params)
   const Categories = [
     {
       name: 'Pictures',

@@ -12,9 +12,9 @@ export default function Home() {
   return (
     <main className="flex flex-col md:flex-row h-screen w-full bg-[#FAF5F0] justify-between mt-2 p-4 rounded-sm">
      <div className="md:m-12 m-2 md:mt-0 mt-16">
-       <h1 className="text-5xl font-bold text-black">Looking everywhere <br /> and still feel lost? <br /> We’ll get you home.
+       <h1 className="text-5xl font-bold text-black">Real Estate Ninjas<br /> By MOHD BILAL
 </h1>
-<p className="font-thin text-2xl text-black mt-4 ">Your Real Estate Ninja will handle every step of the process  when you buy or sell.<br /> Use our search and management dashboard to track everything and everyone <br /> involved in your transaction.</p>
+<p className="font-thin text-2xl text-black mt-4">Real Estate Ninjas is an innovative platform crafted by the visionary Mohd Bilal. <br /> With an unwavering commitment to excellence, this marketplace is dedicated to enhancing <br /> the experience of acquiring and transferring properties.</p>
 <form onSubmit={handlesearch} className="p-4">
     <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div className="relative">

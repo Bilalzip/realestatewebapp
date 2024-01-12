@@ -23,8 +23,6 @@ const Page = () => {
     fetchProperties();
   }, []);
 
-  console.log(properties);
-
   return (
     <section className="flex gap-6 mt-1 ml-1">
       <LeftSidebar />
