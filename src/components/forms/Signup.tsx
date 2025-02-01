@@ -1,107 +1,117 @@
 "use client"
-import React from 'react';
-import axios from 'axios'
-import {useRouter} from "next/navigation";
-import {toast} from 'react-hot-toast';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
+import { FaUser, FaEnvelope, FaLock, FaUserCircle } from 'react-icons/fa';
 
-const Signup = () => {
-
+const Signup: React.FC = () => {
   const router = useRouter();
-  const [signup, setsignup] = React.useState({
+  const [signup, setSignup] = useState<{ name: string; email: string; password: string; username: string }>({
     name: '',
     email: '',
     password: '',
     username: '',
   });
 
-  const onChange = (e:any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setsignup({ ...signup, [name]: value });
+    setSignup((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Sending Data to Api
-  const onSubmit = async (e:any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/users/signup", signup);
-      console.log(response.data);
-      toast.success("Signup Successful");
-      router.push("/login")
-
+      await axios.post('/api/users/signup', signup);
+      toast.success('Signup Successful');
+      router.push('/login');
     } catch (error) {
-      toast.error("Some thing goes wrong")
-      console.error("Error submitting form:", error);
+      toast.error('Something went wrong');
+      console.error('Error submitting form:', error);
     }
   };
 
   return (
-    <form  onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h1 className="text-2xl font-semibold mb-6">Signup</h1>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fullname">
-          Full Name
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="fullname"
-          type="text"
-          value={signup.name}
-          name="name"
-          placeholder="Full Name"
-          onChange={onChange}
-        />
+    <div>
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Sign Up</h1>
+        <form onSubmit={onSubmit} className="space-y-6">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fullname">Full Name</label>
+            <div className="flex items-center border border-gray-300 rounded-md px-3">
+              <FaUser className="text-gray-500" />
+              <input
+                value={signup.name}
+                className="w-full py-2 px-3 focus:outline-none"
+                id="fullname"
+                name="name"
+                onChange={onChange}
+                type="text"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Username</label>
+            <div className="flex items-center border border-gray-300 rounded-md px-3">
+              <FaUserCircle className="text-gray-500" />
+              <input
+                value={signup.username}
+                className="w-full py-2 px-3 focus:outline-none"
+                id="username"
+                name="username"
+                onChange={onChange}
+                type="text"
+                placeholder="Choose a username"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
+            <div className="flex items-center border border-gray-300 rounded-md px-3">
+              <FaEnvelope className="text-gray-500" />
+              <input
+                value={signup.email}
+                className="w-full py-2 px-3 focus:outline-none"
+                id="email"
+                name="email"
+                onChange={onChange}
+                type="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password</label>
+            <div className="flex items-center border border-gray-300 rounded-md px-3">
+              <FaLock className="text-gray-500" />
+              <input
+                value={signup.password}
+                className="w-full py-2 px-3 focus:outline-none"
+                id="password"
+                name="password"
+                onChange={onChange}
+                type="password"
+                placeholder="Create a password"
+                required
+              />
+            </div>
+          </div>
+          <button
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-all"
+            type="submit"
+          >
+            Sign Up
+          </button>
+        </form>
+        <p className="text-center text-gray-500 text-sm mt-4">
+          Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a>
+        </p>
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-          Username
-        </label>
-        <input
-          value={signup.username}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="username"
-          type="text"
-          name="username"
-          placeholder="Username"
-          onChange={onChange}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-          Email
-        </label>
-        <input
-          value={signup.email}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
-          name="email"
-          onChange={onChange}
-          type="email"
-          placeholder="Email"
-        />
-      </div>
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-          Password
-        </label>
-        <input
-          value={signup.password}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          name="password"
-          onChange={onChange}
-          type="password"
-          placeholder="Password"
-        />
-      </div>
-      <div className="flex items-center justify-between">
-      <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit" // Change type to "submit"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
 

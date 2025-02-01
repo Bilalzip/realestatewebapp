@@ -19,9 +19,9 @@ export async function POST(req: Request, res: Response) {
             message: 'Invalid token',
           });
         }
-
+        
         const user = await User.findById(decode.id);
-
+        
         if (!user){
           return NextResponse.json({
             message: 'User not found',

@@ -1,25 +1,31 @@
-import Link from 'next/link'
-import React from 'react'
+import React from 'react';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <div className='flex flex-col md:flex-row md:ml-12 md:mr-12 mt-6 ml-4 mr-4 font-serif h-full md:h-80 gap-2 bg-[#374151] rounded-md'>
-      <div className='md:w-1/3 w-full h-full '>
-        <div className='m-4 flex items-center justify-center'>
-        <img className='w-1/2 h-1/2 rounded-full' src="https://image.similarpng.com/very-thumbnail/2022/01/Buildings-real-estate-logo-design-on-transparent-background-PNG.png" alt="" />
+    <footer className="bg-gray-900 text-gray-300 py-8 mt-12 border-t-4 border-gray-700 shadow-lg">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+        <p className="text-sm text-gray-400 border-l-4 border-blue-500 pl-4">
+          &copy; {new Date().getFullYear()} Real Estate Co. All rights reserved.
+        </p>
+        
+        <div className="flex space-x-6 mt-4 md:mt-0 border-r-4 border-blue-500 pr-4 py-2">
+          <a href="#" className="text-gray-400 hover:text-blue-400 transition transform hover:scale-110">
+            <FaFacebook className="text-2xl" />
+          </a>
+          <a href="#" className="text-gray-400 hover:text-blue-400 transition transform hover:scale-110">
+            <FaTwitter className="text-2xl" />
+          </a>
+          <a href="#" className="text-gray-400 hover:text-blue-400 transition transform hover:scale-110">
+            <FaInstagram className="text-2xl" />
+          </a>
+          <a href="#" className="text-gray-400 hover:text-blue-400 transition transform hover:scale-110">
+            <FaLinkedin className="text-2xl" />
+          </a>
         </div>
       </div>
-      <div className='md:w-1/3 w-full h-full md:ml-0 flex justify-center'>
-        <li className='text-xl flex flex-col mt-6 text-white font-serif gap-4'>
-          <ul><Link href = '/contactus'> Contact us</Link></ul>
-        </li>
-        
-      </div>
-      <div className='md:w-1/3 w-full h-full text-xl text-white mt-6 md:ml-0 p-4 text-center'>
-       <p>Discover the ultimate real estate experience with us, the <span className='font-bold'>Real Estate Ninjas</span>. Your go-to for seamless property transactions.</p>
-      </div>
-    </div>
-  )
-}
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
