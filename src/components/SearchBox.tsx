@@ -52,7 +52,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ setProperties }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="p-4 w-full">
+    <form onSubmit={handleSearch} className="p-4 w-full mb-4 md:mb-0">
       <div className="relative">
         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
           <Bot className="text-blue-600" size={20} />
@@ -61,7 +61,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ setProperties }) => {
         {search.trim() === "" && (
           <motion.div
             key={currentMessage}
-            className="absolute inset-y-0 left-10 flex items-center text-gray-500 italic text-sm"
+            className="absolute inset-y-0 left-10 hidden md:flex items-center text-gray-500 italic text-sm"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -70,13 +70,16 @@ const SearchBox: React.FC<SearchBoxProps> = ({ setProperties }) => {
             {currentMessage}
           </motion.div>
         )}
-
+        
         <input
           onChange={(e) => setSearch(e.target.value)}
           type="text"
           value={search}
           className="block w-full p-4 pl-10 pr-14 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
           required
+          autoComplete="off"
+          inputMode="text"
+          style={{ caretColor: 'auto' }}
         />
 
         <button type="submit" className="absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg p-2">
