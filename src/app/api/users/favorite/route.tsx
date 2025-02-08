@@ -4,15 +4,13 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken'
 import User from "@/models/UserModel";
-// Your POST route handler
-// Your POST route handler
+type Decode = { id: string; username: string; email: string };
 export async function POST(req: Request, res: Response) {
     try {
       const reqBody = await req.json();
       const { slug, token } = reqBody;
-      console.log(token)
       if (!slug ){
-        type Decode = { id: string; username: string; email: string };
+       
         const decode = jwt.verify(token, process.env.JWT_SECRET!) as string | Decode;
         if (typeof decode === 'string') {
           return NextResponse.json({

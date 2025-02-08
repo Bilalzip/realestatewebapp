@@ -1,100 +1,223 @@
-"use client"
-import ImageUploadForm from '@/components/ImageUploadForm'
-import axios from 'axios'
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
+"use client";
+import ImageUploadForm from '@/components/ImageUploadForm';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
-const Page = () => {
-
-  const [hide , sethide ] = useState(false);
-
-  const [id, setId] = useState('')
-
-  const [basic , setbasic ] = useState({
-    name:'', streetaddress:"", pincode:'', landmark:'', description:'',price:'', bedrooms:'', bathrooms:'', state:''
-  })
-  const onchange = (e:any) =>{
-    const {name , value } = e.target;
-    setbasic({...basic, [name]:value});
-   }
-  const SaveBasicInfo = async (e:any)=>{
-    e.preventDefault()
-    const response = await axios.post('/api/admin/listing', basic);
-    toast.success(response.data.message);
-    setId(response.data.save._id);
-
-    sethide(!hide);
-  }
-  console.log(basic)
-  return (
-    <div className='flex items-center justify-center md:justify-start md:items-start mt-6 md:ml-12 flex-col m-4'>
-      <h1 className='text-4xl font-mono font-semibold text-black '>List Your Property</h1>
-
-      { <div className='w-full'>
-          <form  onSubmit={SaveBasicInfo} className={`w-full md:w-auto mt-8 text-xl font-thin font-sans ${hide ? "hidden duration-100 " : "block"}`}>
-            <h1 className='mt-4 mb-4 text-2xl font-serif font-semibold'>Enter Basic Details</h1>
-      
-        <div className="mb-4 md:flex md:justify-between gap-6">
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label  className="block mr-0 md:mr-2">Name</label>
-            <input required type="text" id="name" name='name' value={basic.name} onChange={onchange} className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label className="block">Street Address</label>
-            <input required type="text" id="address" name='streetaddress' value={basic.streetaddress} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label className="block">STATE (e.g ,CA)</label>
-            <input required placeholder='State Name like "CA"' type="text" id="state" maxLength={2} autoCapitalize='on' name='state' value={basic.state} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label  className="block">Pin Code</label>
-            <input required type="text"id="address" name= 'pincode' value={basic.pincode} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label className="block mr-0 md:mr-2">LandMark</label>
-            <input required type="text" id="address" name="landmark" value={basic.landmark} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label className="block mr-0 md:mr-2">Tentative Price $</label>
-            <input required type="text" id="address" name="price" value={basic.price} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label className="block mr-0 md:mr-2">Bedrooms</label>
-            <input type="text" id="address" name="bedrooms" value={basic.bedrooms} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-          <div className="mb-2 md:mb-0 flex md:flex-row flex-col md:items-center items-start">
-            <label className="block mr-0 md:mr-2">Bathrooms</label>
-            <input type="text" id="address" name="bathrooms" value={basic.bathrooms} onChange={onchange}  className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 mt-2 md:mt-0" />
-          </div>
-        </div>
-                <div className="w-full font-sans border border-black mt-8 mb-8 p-8">
-        <label className="text-3xl font-semibold font-sans mb-4 block">
-          Describe your property
-        </label>
-        <textarea
-        name='description'
-        value={basic.description}
-        onChange={onchange}
-          className="w-full h-40 px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
-          placeholder="Enter your property description..."
-        ></textarea>
-    </div>
-
-    <div className='flex justify-center items-center'>
-              <button type='submit' className='w-44 px-3 py-3 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700'>
-          Save
-        </button>
-                </div>
-      </form>
-      <div className={`w-full flex items-center justify-center bg-gray-400 bg-opacity-10 mt-4 mb-4 p-8 ${!hide ? "hidden" : "block"}`}>
-      <button onClick={(e)=>{sethide(!hide)}} type='submit' className="w-24 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700">Edit</button>
-      </div>
-</div>}
-      <ImageUploadForm imgid = {id}/>
-      
-    </div>
-  )
+interface BasicPropertyInfo {
+  name: string;
+  streetaddress: string;
+  pincode: string;
+  landmark: string;
+  description: string;
+  price: string;
+  bedrooms: string;
+  bathrooms: string;
+  state: string;
 }
 
-export default Page
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    _id: string;
+  };
+}
+
+const Page = () => {
+  const [hide, setHide] = useState(false);
+  const [id, setId] = useState('');
+  const [basic, setBasic] = useState<BasicPropertyInfo>({
+    name: '',
+    streetaddress: '',
+    pincode: '',
+    landmark: '',
+    description: '',
+    price: '',
+    bedrooms: '',
+    bathrooms: '',
+    state: ''
+  });
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setBasic(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const saveBasicInfo = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post<ApiResponse>('/api/admin/listing', basic);
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        
+        if (!response.data.data?._id) {
+          throw new Error("Missing property ID in response");
+        }
+        
+        setId(response.data.data._id);
+        setHide(true);
+      } else {
+        throw new Error(response.data.message || "Something went wrong");
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong while saving");
+      console.error(error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center tracking-tight">
+          List Your Property
+        </h1>
+
+        {!hide ? (
+          <form onSubmit={saveBasicInfo} className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Basic Details</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Property Name</label>
+                <input 
+                  id="name"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="text" 
+                  name="name" 
+                  value={basic.name} 
+                  onChange={onChange} 
+                  placeholder="Enter property name" 
+                  required 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="streetaddress" className="block text-sm font-medium text-gray-700">Street Address</label>
+                <input 
+                  id="streetaddress"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="text" 
+                  name="streetaddress" 
+                  value={basic.streetaddress} 
+                  onChange={onChange} 
+                  placeholder="Enter street address" 
+                  required 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+                <input 
+                  id="state"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="text" 
+                  name="state" 
+                  value={basic.state} 
+                  onChange={onChange} 
+                  placeholder="e.g. CA" 
+                  required 
+                  maxLength={2} 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">Pin Code</label>
+                <input 
+                  id="pincode"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="text" 
+                  name="pincode" 
+                  value={basic.pincode} 
+                  onChange={onChange} 
+                  placeholder="Enter pin code" 
+                  required 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="landmark" className="block text-sm font-medium text-gray-700">Landmark</label>
+                <input 
+                  id="landmark"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="text" 
+                  name="landmark" 
+                  value={basic.landmark} 
+                  onChange={onChange} 
+                  placeholder="Enter nearby landmark" 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+                <input 
+                  id="price"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="number" 
+                  name="price" 
+                  value={basic.price} 
+                  onChange={onChange} 
+                  placeholder="Enter price in USD" 
+                  required 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="bedrooms" className="block text-sm font-medium text-gray-700">Bedrooms</label>
+                <input 
+                  id="bedrooms"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="number" 
+                  name="bedrooms" 
+                  value={basic.bedrooms} 
+                  onChange={onChange} 
+                  placeholder="Number of bedrooms" 
+                  required 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="bathrooms" className="block text-sm font-medium text-gray-700">Bathrooms</label>
+                <input 
+                  id="bathrooms"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                  type="number" 
+                  name="bathrooms" 
+                  value={basic.bathrooms} 
+                  onChange={onChange} 
+                  placeholder="Number of bathrooms" 
+                  required 
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea 
+                id="description"
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                name="description" 
+                value={basic.description} 
+                onChange={onChange} 
+                placeholder="Describe your property in detail..." 
+                rows={4}
+              ></textarea>
+            </div>
+
+            <button 
+              type="submit" 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ease-in-out shadow-sm hover:shadow-md"
+            >
+              Save & Continue
+            </button>
+          </form>
+        ) : (
+          <ImageUploadForm imgid={id} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Page;

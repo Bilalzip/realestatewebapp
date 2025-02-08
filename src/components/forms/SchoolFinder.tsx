@@ -1,58 +1,133 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Bars } from 'react-loader-spinner';
-const SchoolFinder = ({sz}:any) => {
-  console.log(sz)
-  
-  const [schools, setSchools] = useState([]);
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Bars } from "react-loader-spinner";
+import Image from "next/image";
+
+const SchoolFinder = (data:any) => {
+  const [schools, setSchools] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchSchools = async (lat: number, lng: number) => {
+    try {
+      const response = await axios.post('/api/maps', {
+        location: { lat, lng }
+      });
+
+      if (response.data.results) {
+        setSchools(response.data.results);
+      } else {
+        setError("No schools found nearby.");
+      }
+    } catch (error) {
+      console.error("Error fetching schools:", error);
+      setError("Failed to fetch nearby schools.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async (data:any) => {
-      console.log(data)
+    const fetchCoordinates = async () => {
       try {
-        const response = await axios.get(
-          `https://api.schooldigger.com/v1.2/schools?st=${`NY`}&zip=${sz.pincode}&appID=a9f1e0df&appKey=51b5124c005037772ce6b311a2a92cf4`
+        const geoResponse = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json`,
+          {
+            params: {
+              address: data.pincode,
+              key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+            },
+          }
         );
-        setSchools(response.data.schoolList);
-        console.log(response.data.schoolList)
-        setLoading(false)
+
+        if (
+          geoResponse.data.status === "OK" &&
+          geoResponse.data.results.length > 0
+        ) {
+          const location = geoResponse.data.results[0].geometry.location;
+          console.log("Coordinates:", location);
+          await fetchSchools(location.lat, location.lng);
+        } else {
+          setError("Invalid ZIP Code. Please try again.");
+          setLoading(false);
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching coordinates:", error);
+        setError("Failed to get location. Try again later.");
+        setLoading(false);
       }
     };
-
-    fetchData(sz);
-  }, [sz]);
-
-  console.log(schools)
+    
+    if (data) {
+      fetchCoordinates();
+    }
+  }, [data]);
+  
 
   return (
-    <div className="flex flex-wrap justify-center items-center">
+    <div className="flex flex-wrap justify-center items-center p-4">
       {loading ? (
-        <Bars height="80" width="80" color="#4fa94d" ariaLabel="bars-loading" />
-      ) : (
-        schools.map((item: any) => (
-          <div key={item.schoolid} className="max-w-md mx-4 my-4 bg-white p-4 rounded-md border border-black">
-            <h1 className="text-3xl font-semibold mb-2">{item.schoolName}</h1>
-            <p className="mb-2">Phone: {item.phone}</p>
-            <p className="mb-2">Address: {item.address.html}</p>
-            <div className="flex items-center mb-2">
-              {item.isPrivate ? (
-                <span className="text-green-600 mr-2">
-                  <strong>Private</strong>
-                </span>
+        <div className="flex items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      ) : error ? (
+        <p className="text-red-600 text-center w-full">{error}</p>
+      ) : schools.length > 0 ? (
+        schools.map((school: any) => (
+          <div
+            key={school.place_id}
+            className="w-96 bg-white shadow-lg rounded-xl overflow-hidden m-4 border border-gray-300 hover:shadow-xl transition duration-300"
+          >
+            {/* School Image */}
+            <div className="h-48 w-full bg-gray-200 relative">
+              {school.photos ? (
+                <Image
+                  src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${school.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+                  alt={school.name}
+                  layout="fill"
+                  objectFit="cover"
+                />
               ) : (
-                <span className="text-blue-600 mr-2">
-                  <strong>Public</strong>
-                </span>
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  No Image Available
+                </div>
               )}
-              {item.schoolLevel === 'Elementary' && <span className="text-purple-600">✅ Elementary</span>}
-              {item.schoolLevel === 'Middle' && <span className="text-orange-600">✅ Middle</span>}
-              {item.schoolLevel === 'High' && <span className="text-red-600">✅ High</span>}
-              {item.schoolLevel === 'College' && <span className="text-indigo-600">✅ College</span>}
+            </div>
+
+            {/* School Info */}
+            <div className="p-4 h-48 flex flex-col justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800 line-clamp-2">{school.name}</h2>
+                <p className="text-gray-600 mt-2 line-clamp-2">{school.vicinity}</p>
+              </div>
+
+              <div>
+                {/* Rating */}
+                {school.rating && (
+                  <p className="text-yellow-500 mt-2">
+                    ⭐ {school.rating} ({school.user_ratings_total} reviews)
+                  </p>
+                )}
+
+                {/* School Type */}
+                <p className="mt-2">
+                  {school.business_status === "OPERATIONAL" ? (
+                    <span className="text-green-600 font-semibold">
+                      ✅ Operational
+                    </span>
+                  ) : (
+                    <span className="text-red-600 font-semibold">
+                      ❌ Temporarily Closed
+                    </span>
+                  )}
+                </p>
+              </div>
             </div>
           </div>
         ))
+      ) : (
+        <p className="text-gray-600 text-center w-full">No schools found nearby.</p>
       )}
     </div>
   );

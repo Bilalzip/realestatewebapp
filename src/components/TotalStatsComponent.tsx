@@ -12,32 +12,41 @@ interface TotalStatsComponentProps {
 
 const TotalStatsComponent: React.FC<TotalStatsComponentProps> = ({ statsdata }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 bg-gray-100 shadow-md rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
       {/* Total Users */}
-      <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-        <FaUsers className="text-blue-500 text-4xl" />
-        <div>
-          <h2 className="text-gray-700 text-lg font-semibold">Total Users</h2>
-          <p className="text-xl font-bold text-gray-900">{statsdata.totalusers}</p>
+      <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-blue-400 bg-opacity-30 rounded-xl">
+            <FaUsers className="text-white text-3xl" />
+          </div>
+          <span className="text-4xl font-bold text-white">{statsdata.totalusers}</span>
         </div>
+        <h2 className="text-white text-lg font-medium">Total Users</h2>
+        <div className="mt-2 w-full bg-blue-400 bg-opacity-30 h-1 rounded-full" />
       </div>
 
       {/* Total Property Listed */}
-      <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-        <FaBuilding className="text-green-500 text-4xl" />
-        <div>
-          <h2 className="text-gray-700 text-lg font-semibold">Total Property Listed</h2>
-          <p className="text-xl font-bold text-gray-900">{statsdata.totalproperties}</p>
+      <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-emerald-400 bg-opacity-30 rounded-xl">
+            <FaBuilding className="text-white text-3xl" />
+          </div>
+          <span className="text-4xl font-bold text-white">{statsdata.totalproperties}</span>
         </div>
+        <h2 className="text-white text-lg font-medium">Total Properties</h2>
+        <div className="mt-2 w-full bg-emerald-400 bg-opacity-30 h-1 rounded-full" />
       </div>
 
       {/* Total Purchases */}
-      <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-        <FaShoppingCart className="text-red-500 text-4xl" />
-        <div>
-          <h2 className="text-gray-700 text-lg font-semibold">Total Purchases</h2>
-          <p className="text-xl font-bold text-gray-900">0</p>
+      <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-purple-400 bg-opacity-30 rounded-xl">
+            <FaShoppingCart className="text-white text-3xl" />
+          </div>
+          <span className="text-4xl font-bold text-white">0</span>
         </div>
+        <h2 className="text-white text-lg font-medium">Total Purchases</h2>
+        <div className="mt-2 w-full bg-purple-400 bg-opacity-30 h-1 rounded-full" />
       </div>
     </div>
   );

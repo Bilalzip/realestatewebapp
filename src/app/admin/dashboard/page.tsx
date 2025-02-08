@@ -5,10 +5,23 @@ import TotalStatsComponent from '@/components/TotalStatsComponent'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-
-type StatsType= {
-  totalusers:number; totalproperties:number
+// Add interface for API response
+interface ApiResponse {
+  Data: {
+    UserData: [{
+      totalUsers: string;
+    }];
+    PropertyData: [{
+      totalProperties: string;
+    }];
+  }
 }
+
+type StatsType = {
+  totalusers: number;
+  totalproperties: number;
+}
+
 const Page = () => {
 
   const [data, setdata] = useState<StatsType>({
@@ -18,14 +31,19 @@ const Page = () => {
 
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await axios.post('/api/totalstats');
-      console.log();
-
-      if (response.data.Data.UserData[0].totalUsers > 0) {
-        setdata({
-          totalusers: parseInt(response.data.Data.UserData[0].totalUsers),
-          totalproperties: parseInt(response.data.Data.PropertyData[0].totalProperties)
-        });
+      try {
+        const response = await axios.post<ApiResponse>('/api/totalstats');
+        
+        // Safely check if all required data exists
+        if (response?.data?.Data?.UserData?.[0]?.totalUsers) {
+          setdata({
+            totalusers: parseInt(response.data.Data.UserData[0].totalUsers),
+            totalproperties: parseInt(response.data.Data.PropertyData[0].totalProperties)
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+        // Optionally set some error state here
       }
     };
 

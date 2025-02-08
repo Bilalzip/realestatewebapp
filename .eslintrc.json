@@ -1,3 +1,69 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals", 
+    "eslint:recommended", 
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "import", "unused-imports"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "rules": {
+    /* 🔹 TypeScript Best Practices */
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/no-inferrable-types": "warn",
+
+    /* 🔹 Next.js Performance & Best Practices */
+    "@next/next/no-img-element": "warn",
+    "@next/next/no-html-link-for-pages": "warn",
+    "react/no-unescaped-entities": "warn",
+
+    /* 🔹 Code Formatting & Readability */
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-debugger": "error",
+    "curly": ["error", "all"],
+
+    /* 🔹 Import Rules */
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
+    "import/no-unresolved": "error",
+    "import/no-duplicates": "error",
+    "import/newline-after-import": ["error", { "count": 1 }],
+    "unused-imports/no-unused-imports": "error",
+
+    /* 🔹 React & Next.js Best Practices */
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }],
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-sort-props": ["error", { "callbacksLast": true, "shorthandFirst": true }],
+    
+    /* 🔹 Performance & Optimization */
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+
+    /* 🔹 Security & Error Prevention */
+    "no-eval": "error",
+    "security/detect-object-injection": "warn"
+  },
+  "settings": {
+    "react": { "version": "detect" }
+  }
 }

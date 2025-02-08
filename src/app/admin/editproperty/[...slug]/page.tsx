@@ -3,14 +3,28 @@ import LeftSidebar from '@/components/LeftSidebar';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import {Bars} from 'react-loader-spinner';
+import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-const Page = ({ params }: any) => {
-  const [slug, setSlug] = useState('');
-  const [data, setData] = useState<any>([]);
-  const [edit, setEdit] = useState(false);
+// Define interface for form data
+interface PropertyFormData {
+  name: string;
+  price: string;
+  bedrooms: string;
+  description: string;
+  streetaddress: string;
+  pincode: string;
+  state: string;
+  bathrooms: string;
+  image?: string;
+}
+
+const Page = ({ params }: { params: { slug: string[] } }) => {
+  const router = useRouter();
+  const [slug, setSlug] = useState<string[]>([]);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [formdata, setFormdata] = useState({
+  const [formdata, setFormdata] = useState<PropertyFormData>({
     name: '',
     price: '',
     bedrooms: '',
@@ -19,183 +33,197 @@ const Page = ({ params }: any) => {
     pincode: '',
     state: '',
     bathrooms: '',
+    image: ''
   });
-
+  
   useEffect(() => {
-    setSlug(params);
+    setSlug(params.slug);
     const fetchProperty = async () => {
       try {
-        const response = await axios.post(`/api/property`, slug);
-        console.log(response)
+        const response = await axios.post(`/api/property`, { slug: params.slug });
         setData(response.data.property);
-        toast.success("Edit the details of the property")
+        setFormdata({
+          name: response.data.property.name || '',
+          price: response.data.property.price || '',
+          bedrooms: response.data.property.bedrooms?.toString() || '',
+          description: response.data.property.description || '',
+          streetaddress: response.data.property.streetaddress || '',
+          pincode: response.data.property.pincode || '',
+          state: response.data.property.state || '',
+          bathrooms: response.data.property.bathrooms?.toString() || '',
+          image: response.data.property.image || ''
+        });
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        toast.error("Failed to fetch property details");
         setLoading(false);
       }
     };
     fetchProperty();
-  }, [params]);
-
-  const handleEdit = () => {
-    setEdit(!edit);
-  };
+  }, [params.slug]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormdata((prevData) => ({ ...prevData, [name]: value }));
   };
-const handleSubmit = async(e:any)=>{
-e.preventDefault();
-  const response = await axios.post("/api/editproperty", {formdata: formdata , id : data._id});
-  console.log(response);
-  setEdit(!edit)
-}
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await axios.post("/api/editproperty", { formdata: formdata, id: data._id });
+      toast.success("Property updated successfully!");
+      router.push('/admin/dashboard');
+    } catch (error) {
+      toast.error("Failed to update property");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this property?")) {
+      try {
+        await axios.post("/api/deleteproperty", { id: data._id });
+        toast.success("Property deleted successfully!");
+        router.push('/admin/dashboard');
+      } catch (error) {
+        toast.error("Failed to delete property");
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
+    );
+  }
+
   return (
-    <div className='flex flex-row'>
+    <div className="flex min-h-screen bg-gray-50">
       <LeftSidebar />
-
-      { !loading ? (
-      <div className={`md:m-16 ml-3 mt-6 m-4 text-white ${!edit ? 'bg-yellow-700' : 'bg-[#332E3C] text-white md:w-1/3 w-full'} md:w-1/4 w-full h-fit md:p-8 p-2 rounded-md`}>
-        <button
-          onClick={handleEdit}
-          className={`bg-black  w-20 h-12 rounded-md relative md:left-64 md:bottom-6 left-2 bottom-0 ${!edit ? 'block' : 'hidden'}`}
-        >
-          Edit
-        </button>
-
-        {!edit ? (  
-          <div className='flex flex-col gap-3'>
-            <div>
-              <span>Name: </span>
-              {data?.name}
-            </div>
-            <div>
-              <span>Price: </span>
-              {data?.price}
-            </div>
-            <div>
-              <span>Bedrooms: </span>
-              {data?.bedrooms}
-            </div>
-            <div>
-              <span>Description: </span>
-              {data?.description}
-            </div>
-            <div>
-              <span>Street Address: </span>
-              <span>{data?.streetaddress}</span>
-            </div>
-            <div>
-              <span>Pincode: </span>
-              <span>{data?.pincode}</span>
-            </div>
-            <div>
-              <span>State : </span>
-              <span>{data?.state}</span>
-            </div>
-            <div>
-              <span>Bedrooms : </span>
-              <span>{data?.bedrooms}</span>
-            </div>
-            <div>
-              <span>Bathrooms : </span>
-              <span>{data?.bathrooms}</span>
-            </div>
+      
+      <div className="flex-1 p-4 sm:p-8">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-3xl font-bold text-gray-900">Edit Property</h1>
+            <button
+              onClick={handleDelete}
+              className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+            >
+              Delete Property
+            </button>
           </div>
-        ) : (
-          <div>
-            <form onSubmit={handleSubmit} className='flex flex-col gap-3 text-black'>
-              <label>Name</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                name='name'
-                value={formdata.name}
-                onChange={handleChange}
-              />
-              <label htmlFor='price'>Price</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                id='price'
-                name='price'
-                value={formdata.price}
-                onChange={handleChange}
-              />
-              <label htmlFor='bedrooms'>Bedrooms</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                id='bedrooms'
-                name='bedrooms'
-                value={formdata.bedrooms}
-                onChange={handleChange}
-              />
-              <label htmlFor='description'>Description</label>
-              <textarea
-                className='rounded-md'
-                id='description'
-                name='description'
-                rows={3}
-                value={formdata.description}
-                onChange={handleChange}
-              ></textarea>
-              <label htmlFor='streetaddress'>Street Address</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                id='streetaddress'
-                name='streetaddress'
-                value={formdata.streetaddress}
-                onChange={handleChange}
-              />
-              <label htmlFor='pincode'>Pincode</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                id='pincode'
-                name='pincode'
-                value={formdata.pincode}
-                onChange={handleChange}
-              />
-              <label htmlFor='state'>State</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                id='state'
-                name='state'
-                value={formdata.state}
-                onChange={handleChange}
-              />
-              <label htmlFor='bathrooms'>Bathrooms</label>
-              <input
-                className='h-8 rounded-md'
-                type='text'
-                id='bathrooms'
-                name='bathrooms'
-                value={formdata.bathrooms}
-                onChange={handleChange}
-              />
-              <button type='submit' className='bg-black text-white rounded-md py-3 px-6'>
-                Submit
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Property Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formdata.name}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Price</label>
+                <input
+                  type="text"
+                  name="price"
+                  value={formdata.price}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Bedrooms</label>
+                <input
+                  type="number"
+                  name="bedrooms"
+                  value={formdata.bedrooms}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Bathrooms</label>
+                <input
+                  type="number"
+                  name="bathrooms"
+                  value={formdata.bathrooms}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="col-span-1 sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Street Address</label>
+                <input
+                  type="text"
+                  name="streetaddress"
+                  value={formdata.streetaddress}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Pincode</label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={formdata.pincode}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium text-gray-700">State</label>
+                <input
+                  type="text"
+                  name="state"
+                  value={formdata.state}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="col-span-1 sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                  name="description"
+                  rows={4}
+                  value={formdata.description}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-4">
+              <button
+                type="button"
+                onClick={() => router.push('/admin/dashboard')}
+                className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+              >
+                Cancel
               </button>
-            </form>
-          </div>
-        )}
-      </div>) : ( <div className='m-4'>
-
-        <Bars 
-                      height="80"
-                      width="80"
-                      color="#4fa94d"
-                      ariaLabel="bars-loading"
-                      wrapperStyle={{}}
-                      wrapperClass=""
-                      visible={true}
-                         />
-      </div>  ) }
+              <button
+                type="submit"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

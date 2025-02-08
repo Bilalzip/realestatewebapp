@@ -1,109 +1,118 @@
-"use client"
-import LeftSidebar from '@/components/LeftSidebar'
-import axios from 'axios';
-import { error } from 'console';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
-import toast from 'react-hot-toast';
-import { Bars } from 'react-loader-spinner';
+"use client";
+import LeftSidebar from "@/components/LeftSidebar";
+import useToken from "@/hooks/useToken";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Trash2, ArrowRight } from "lucide-react";
+
 const Page = () => {
   const router = useRouter();
-  const [token , settoken] = useState('');
-  const [fav , setfav] = useState([]);
-  const [property , setproperty] = useState([]);
+  const [token] = useToken();
+  const [property, setProperty] = useState<any>([]);
+
   useEffect(() => {
-      if (typeof window !== 'undefined') {
-        const storedToken = localStorage.getItem('token');
-        if (storedToken) {
-          const tokenString = JSON.parse(storedToken);
-          settoken(tokenString);
-          gettoken(tokenString);
-        
-        } else {
-          console.error('Token not found in local storage');
-        }
-      }
+    if (token) {
+      fetchFavorites(token);
+    }
   }, [token]);
 
- 
-  const gettoken =async (token:string) => {
-    
-   try {
-    const response = await axios.post('/api/users/favorite', {
-      token: token,
-    });
-    const id = response.data.wish;
-    data(id);
-  } catch (error: any) {
-    console.log(error.message);
-  }
+  const fetchFavorites = async (userToken: string) => {
+    try {
+      const response = await axios.post("/api/users/favorite", { token: userToken });
+      const favoriteIds = response.data.wish;
+      fetchProperties(favoriteIds);
+    } catch (error: any) {
+      console.error("Error fetching favorites:", error.message);
     }
-      const data = async (data:[]) => {
-      const response = await axios.post('/api/property',{
-        id:data
-      });
-      setproperty(response.data.favorites);
-    }
+  };
 
-  
-    const handleremove = async (slug: string) => {
-      try {
-        
-        const response = await axios.post('/api/removefav', { pro: slug, token:token}) 
-        console.log(response)
-      toast.success(response.data.message)
-      setTimeout(() => {
-        router.push('/')
-      }, 2000);
-      
-    } catch (error:any) {
-        console.error('Error removing project:', error.message);
-        toast.error('An error occurred while removing the project');
+  const fetchProperties = async (propertyIds: []) => {
+    try {
+      const response = await axios.post("/api/property", { id: propertyIds });
+      setProperty(response.data.favorites);
+    } catch (error: any) {
+      toast.error("There is an error", error.message);
+      console.error("Error fetching properties:", error.message);
+    }
+  };
+
+  const handleRemove = async (slug: string) => {
+    try {
+      if (!token) {
+        toast.error("User token is missing");
+        return;
       }
-    };
 
+      const response = await axios.post("/api/removefav", { pro: slug, token });
+      toast.success(response.data.message);
 
-    type Item = {
-      name: string, streetaddress:string, pincode:string, landmark:string, imgarray:[string], slug:string , description:string, price:number , bedrooms:number, bathrooms:number
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    } catch (error: any) {
+      console.error("Error removing property:", error.message);
+      toast.error("An error occurred while removing the property");
     }
+  };
 
   return (
-    <div className='flex flex-row'>
-      <LeftSidebar/>
-      <section>
-        {
-          property?.map((item:Item, index)=>(
-            <div key={index || item?.slug} className='p-4 w-full md:h-96 h-1/4 flex md:flex-row font-sans flex-col md:justify-between md:m-8 mt-8'>
-           <Link href={`/properties/${item?.slug}`}>
-           <img className='md:w-auto h-full rounded-md w-full' src={item?.imgarray.length > 0 ? item.imgarray[0] : ''}  alt="villa image" />
-           </Link> 
-           <div className='flex flex-col md:ml-2 mt-3 md:mt-0 '>
-            <h1 className='text-3xl font-semibold '>{item?.name}</h1>
-            <div className='mt-4 text-xl flex flex-col '>
-         <div className='flex flex-col'>
-          <div className='flex flex-row gap-1'> <span className='font-semibold'>Location:</span> 
-          <span> {item?.landmark}</span> </div>
-         <div className='flex flex-row gap-1'>
-         <span className='font-semibold'>Pincode:</span>
-           <span>
-           {item?.pincode}
-            </span>
-         </div>
-              </div> 
-            </div>
-            </div>
-            <div className='flex md:flex-col flex-row justify-between mt-4 md:mt-0 md:gap-8 gap-0'>
-            <Link href={`/properties/${item?.slug}`}> <button className='bg-blue-600 text-white rounded-md font-semibold px-2 py-3'>Explore</button> </Link>
-            <button onClick={() => handleremove(item.slug)} className='bg-blue-600 text-white rounded-md font-semibold  px-2 py-3'> Remove </button>
-            </div>
-            </div> 
-          ))
-        }
-      </section> 
-
+    <div className="flex flex-row md:flex-row min-h-screen bg-gray-100">
+      <LeftSidebar />
+      <section className="flex-1 p-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Your Favorite Properties</h1>
+        {property.length === 0 ? (
+          <p className="text-gray-500 text-lg">You have no favorite properties yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {property.map((item: any, index: number) => (
+              <div
+                key={index || item?.slug}
+                className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105"
+              >
+                <Link href={`/properties/${item?.slug}`}>
+                  <img
+                    className="w-full h-56 object-cover"
+                    src={item?.imgarray.length > 0 ? item.imgarray[0] : "/placeholder.jpg"}
+                    alt={item?.name}
+                  />
+                </Link>
+                
+                <div className="p-4">
+                  <h2 className="text-xl font-semibold text-gray-900">{item?.name}</h2>
+                  <p className="text-gray-600 text-sm mt-1">
+                    <span className="font-semibold">Location:</span> {item?.landmark}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    <span className="font-semibold">Pincode:</span> {item?.pincode}
+                  </p>
+                  <p className="text-blue-700 font-bold text-lg mt-2">${item?.price}</p>
+                  
+                  <div className="flex justify-between mt-4">
+                    <Link href={`/properties/${item?.slug}`}>
+                      <button className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                        Explore <ArrowRight className="ml-2" size={16} />
+                      </button>
+                    </Link>
+                    
+                    <button
+                      onClick={() => handleRemove(item.slug)}
+                      className="flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition"
+                    >
+                      <Trash2 size={16} className="mr-2" />
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

@@ -1,7 +1,7 @@
+import Image from 'next/image';
 import React from 'react';
 
 const ImageGallery = ({ imagedata }) => {
-  // Use a Set to store unique URLs
   const uniqueUrls = new Set(imagedata);
 
   return (
@@ -12,6 +12,7 @@ const ImageGallery = ({ imagedata }) => {
           src={item}
           className='object-cover w-full h-48 md:h-96 rounded-md shadow-md shadow-black'
           alt={`Image ${index}`}
+        
         />
       ))}
     </div>
