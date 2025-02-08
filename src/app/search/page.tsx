@@ -99,12 +99,7 @@ const Page = () => {
     });
     setFilteredProperties(filtered);
   };
-
-  // Add function to generate slug
-  const generateSlug = (name: string): string => {
-    return name.toLowerCase().replace(/\s+/g, '-');
-  };
-
+  
   return (
     <div className="min-h-screen bg-[#FAF5F0] flex flex-col md:flex-row">
       {/* Filter Toggle Button (Only on Mobile) */}
@@ -200,22 +195,43 @@ const Page = () => {
             <Loader className="animate-spin" size={40} />
           </div>
         ) : filteredProperties.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mt-4">
             {filteredProperties.map((property) => (
-              <Link
-                href={`/properties/${generateSlug(property.name)}`}
+              <div 
                 key={property._id}
-                className="block border border-gray-300 rounded-lg p-4 bg-white shadow-md hover:shadow-lg transition"
+                className="bg-white shadow-lg rounded-xl overflow-hidden transition-transform hover:scale-105 duration-300 group"
               >
-                <img
-                  src={property.imgarray?.[0] || "/placeholder.jpg"}
-                  alt={property.name}
-                  className="w-full h-40 object-cover rounded-md"
-                />
-                <h2 className="mt-3 text-lg font-semibold">{property.name}</h2>
-                <p className="text-gray-600">{property.streetaddress}</p>
-                <p className="text-blue-600 font-bold">${property.price}</p>
-              </Link>
+                <Link href={`/properties/${property.slug}`}>
+                  <div className="relative">
+                    <img
+                      src={property.imgarray?.[0] || "/placeholder.jpg"}
+                      alt={property.name}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300"></div>
+                  </div>
+                </Link>
+                <div className="p-6">
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">{property.name}</h2>
+                  <p className="text-gray-500 text-sm mb-2">{property.streetaddress}</p>
+                  <p className="text-2xl font-bold text-blue-600 mb-4">${property.price}</p>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600 flex items-center">
+                        <span className="mr-2">🛏️</span> {property.bedrooms} Bedrooms
+                      </p>
+                      <p className="text-sm text-gray-600 flex items-center">
+                        <span className="mr-2">🚿</span> {property.bathrooms} Bathrooms
+                      </p>
+                    </div>
+                  </div>
+                  <Link href={`/properties/${property.slug}`}>
+                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                      Explore Property
+                    </button>
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
         ) : (

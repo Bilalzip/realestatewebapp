@@ -65,10 +65,10 @@ const Navbar = () => {
             {!token ? (
               <>
                 <button className='bg-blue-500 p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 '>
-                  <Link href='/signup'>Signup</Link>
+                  <Link href='/sign-up'>Signup</Link>
                 </button>
                 <button className='bg-blue-500 p-2 rounded-md font-bold font-serif hover:opacity-100 opacity-90 ml-4'>
-                  <Link href='/login'>Login</Link>
+                  <Link href='/sign-in'>Login</Link>
                 </button>
               </>
             ) : (

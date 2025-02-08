@@ -45,8 +45,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ name, streetaddress, landma
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300 h-96">
-      <img className="w-full h-48 object-cover" src={imgarray[0]} alt="Property" />
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300 h-96 w-[300px]">
+      <Link href={`/properties/${slug}`}>
+        <img className="w-full h-48 object-cover cursor-pointer" src={imgarray[0]} alt="Property" />
+      </Link>
       <div className="p-4">
         <h2 className="text-lg font-semibold text-gray-800">{name}</h2>
         <p className="text-gray-500 text-sm">{landmark}</p>
