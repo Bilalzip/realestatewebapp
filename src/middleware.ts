@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
-    const isPublicPath = path === '/login' || path === '/signup' || path === '/verifyemail';
+    const isPublicPath = path === '/sign-in' || path === '/signup' || path === '/verifyemail';
     const token = request.cookies.get('token')?.value || '';
     const isAdmin = request.cookies.get('admin')?.value === 'true';
 
@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     if (path.startsWith('/admin')) {
         // If no token or not admin, redirect to login
         if (!token || !isAdmin) {
-            return NextResponse.redirect(new URL('/login', request.nextUrl));
+            return NextResponse.redirect(new URL('/sign-in', request.nextUrl));
         }
     }
 }
@@ -24,10 +24,11 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         '/',
-        '/login',
-        '/signup',
+        '/sign-in',
+        '/sign-up',
         '/verifyemail',
         '/profile',
         '/admin/:path*' 
+
     ]
 }
